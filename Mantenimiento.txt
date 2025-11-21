@@ -1,0 +1,24 @@
+PS C:\Users\GERSON> docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED       STATUS       PORTS                                                                                      NAMES
+a2b50f18dba9   cassandra:latest   "docker-entrypoint.s…"   3 hours ago   Up 3 hours   0.0.0.0:9042->9042/tcp, [::]:9042->9042/tcp, 0.0.0.0:9160->9160/tcp, [::]:9160->9160/tcp   cassandra-test
+PS C:\Users\GERSON> docker exec -it cassandra-test nodetool snapshot -t snapshot_music music_streaming
+Requested creating snapshot(s) for [music_streaming] with snapshot name [snapshot_music] and options {skipFlush=false}
+Snapshot directory: snapshot_music
+PS C:\Users\GERSON> docker exec -it cassandra-test nodetool listsnapshots
+Snapshot Details:
+Snapshot name  Keyspace name   Column family name   True size Size on disk Creation time            Expiration time
+snapshot_music music_streaming playlists_by_user    1.38 KiB  14.46 KiB    2025-11-21T18:04:17.093Z
+snapshot_music music_streaming artists              1.21 KiB  7.05 KiB     2025-11-21T18:04:17.093Z
+snapshot_music music_streaming history_by_user_date 1.22 KiB  7.25 KiB     2025-11-21T18:04:17.093Z
+snapshot_music music_streaming users                1.12 KiB  6.68 KiB     2025-11-21T18:04:17.093Z
+snapshot_music music_streaming play_count_by_song   1.1 KiB   6.19 KiB     2025-11-21T18:04:17.093Z
+snapshot_music music_streaming songs_by_artist      1.39 KiB  13.56 KiB    2025-11-21T18:04:17.093Z
+
+Total TrueDiskSpaceUsed: 0 bytes
+
+PS C:\Users\GERSON> docker exec -it cassandra-test nodetool clearsnapshot -t snapshot_music
+Requested clearing snapshot(s) for [all keyspaces] with snapshot name [snapshot_music]
+PS C:\Users\GERSON> docker exec -it cassandra-test nodetool snapshot -t snapshot_playlists music_streaming -cf playlists_by_user
+Requested creating snapshot(s) for [music_streaming] with snapshot name [snapshot_playlists] and options {skipFlush=false}
+Snapshot directory: snapshot_playlists
+PS C:\Users\GERSON>
